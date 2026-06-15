@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounting Adventure Portfolio</title>
+
+    <style>
+        :root {
+            --bg: #e9eee7;
+            --ink: #132019;
+            --muted: #68746b;
+            --paper: #fbfff8;
+            --paper-2: #dfe9dc;
+            --line: #132019;
+            --green: #1f6f4a;
+            --green-soft: #d6eadc;
+            --gold: #b98932;
+            --red: #9d4d43;
+            --blue: #315d70;
+            --shadow: 10px 10px 0 #132019;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background:
+                linear-gradient(rgba(19, 32, 25, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(19, 32, 25, 0.04) 1px, transparent 1px),
+                radial-gradient(circle at 15% 10%, rgba(31, 111, 74, 0.16), transparent 28%),
+                radial-gradient(circle at 88% 20%, rgba(185, 137, 50, 0.16), transparent 30%),
+                var(--bg);
+            background-size: 28px 28px, 28px 28px, auto, auto;
+            color: var(--ink);
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+            cursor: pointer;
+            border: none;
+        }
+
+        .container {
+            width: min(1160px, 92%);
+            margin: auto;
+        }
+
+        /* START SCREEN */
+        .start-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background:
+                radial-gradient(circle at center, rgba(255, 248, 234, 0.88), rgba(237, 229, 216, 0.98)),
+                var(--bg);
+            display: grid;
+            place-items: center;
+            transition: 0.7s ease;
+        }
+
+        .start-screen.hide {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(1.04);
+        }
+
+        .start-box {
+            width: min(680px, 92%);
+            background: var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: var(--shadow);
+            padding: 34px;
+            position: relative;
+        }
+
+        .start-box::before {
+            content: "SAVE SLOT 01";
+            position: absolute;
+            top: -18px;
+            left: 24px;
+            background: var(--green);
+            color: white;
+            border: 3px solid var(--line);
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+        }
+
+        .start-title {
+            font-size: clamp(42px, 7vw, 78px);
+            line-height: 0.9;
+            letter-spacing: -0.08em;
+            margin-bottom: 18px;
+        }
+
+        .start-title span {
+            color: var(--green);
+        }
+
+        .start-box p {
+            color: var(--muted);
+            max-width: 560px;
+            margin-bottom: 26px;
+            font-size: 16px;
+        }
+
+        .start-btn {
+            background: var(--gold);
+            color: var(--ink);
+            border: 3px solid var(--line);
+            box-shadow: 6px 6px 0 var(--line);
+            padding: 14px 20px;
+            font-weight: 900;
+            transition: 0.2s ease;
+        }
+
+        .start-btn:hover {
+            transform: translate(3px, 3px);
+            box-shadow: 3px 3px 0 var(--line);
+        }
+
+        /* NAV */
+        .nav {
+            position: sticky;
+            top: 16px;
+            z-index: 20;
+            padding-top: 16px;
+        }
+
+        .nav-inner {
+            background: rgba(255, 248, 234, 0.76);
+            border: 3px solid var(--line);
+            backdrop-filter: blur(14px);
+            box-shadow: 6px 6px 0 rgba(29, 27, 22, 0.9);
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 950;
+            letter-spacing: -0.04em;
+        }
+
+        .brand-mark {
+            width: 34px;
+            height: 34px;
+            background: var(--green);
+            border: 3px solid var(--line);
+            display: grid;
+            place-items: center;
+            color: white;
+            font-weight: 950;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 18px;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .nav-links a:hover {
+            color: var(--green);
+        }
+
+        .nav-status {
+            background: var(--paper-2);
+            border: 2px solid var(--line);
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 900;
+        }
+
+        .detail-btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 18px;
+            background: var(--green);
+            color: white;
+            border: 3px solid var(--line);
+            box-shadow: 5px 5px 0 var(--line);
+            padding: 13px 16px;
+            font-weight: 950;
+            transition: 0.2s ease;
+        }
+
+        .detail-btn:hover {
+            transform: translate(3px, 3px);
+            box-shadow: 2px 2px 0 var(--line);
+        }
+
+        /* HERO */
+        .hero {
+            padding: 82px 0 60px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 42px;
+            align-items: center;
+        }
+
+        .chapter-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--paper);
+            border: 3px solid var(--line);
+            padding: 8px 12px;
+            font-weight: 900;
+            font-size: 13px;
+            margin-bottom: 22px;
+            box-shadow: 4px 4px 0 var(--line);
+        }
+
+        .chapter-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--red);
+            border: 2px solid var(--line);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0.25;
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(52px, 8vw, 104px);
+            line-height: 0.86;
+            letter-spacing: -0.09em;
+            max-width: 830px;
+            margin-bottom: 26px;
+        }
+
+        .hero h1 span {
+            color: var(--green);
+            text-shadow: 4px 4px 0 rgba(201, 138, 36, 0.28);
+        }
+
+        .hero-desc {
+            max-width: 630px;
+            color: var(--muted);
+            font-size: 17px;
+            margin-bottom: 30px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .btn {
+            border: 3px solid var(--line);
+            background: var(--paper);
+            box-shadow: 5px 5px 0 var(--line);
+            padding: 13px 18px;
+            font-weight: 950;
+            transition: 0.2s ease;
+        }
+
+        .btn.primary {
+            background: var(--green);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translate(3px, 3px);
+            box-shadow: 2px 2px 0 var(--line);
+        }
+
+        /* CHARACTER */
+        .character-window {
+            background: var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: var(--shadow);
+            padding: 18px;
+            position: relative;
+            transform: rotate(1.2deg);
+        }
+
+        .window-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--green);
+            color: white;
+            border: 3px solid var(--line);
+            padding: 10px 12px;
+            font-size: 13px;
+            font-weight: 950;
+            margin-bottom: 16px;
+        }
+
+        .window-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .window-buttons span {
+            width: 12px;
+            height: 12px;
+            background: var(--gold);
+            border: 2px solid var(--line);
+        }
+
+        .sprite-stage {
+            min-height: 230px;
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+                var(--green-soft);
+            background-size: 18px 18px;
+            border: 3px solid var(--line);
+            display: grid;
+            place-items: center;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sprite-shadow {
+            position: absolute;
+            bottom: 32px;
+            width: 150px;
+            height: 26px;
+            background: rgba(29, 27, 22, 0.18);
+            border-radius: 50%;
+        }
+
+        .sprite {
+            position: relative;
+            width: 126px;
+            height: 160px;
+            animation: float 2.6s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes float {
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .head {
+            width: 74px;
+            height: 70px;
+            background: #d49b6a;
+            border: 3px solid var(--line);
+            position: absolute;
+            left: 26px;
+            top: 8px;
+            border-radius: 20px 20px 18px 18px;
+        }
+
+        .hair {
+            width: 82px;
+            height: 30px;
+            background: #2b211b;
+            border: 3px solid var(--line);
+            position: absolute;
+            left: 22px;
+            top: 2px;
+            border-radius: 18px 18px 8px 8px;
+        }
+
+        .eye {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--line);
+            top: 42px;
+        }
+
+        .eye.left {
+            left: 46px;
+        }
+
+        .eye.right {
+            right: 46px;
+        }
+
+        .body {
+            width: 92px;
+            height: 82px;
+            background: var(--blue);
+            border: 3px solid var(--line);
+            position: absolute;
+            left: 17px;
+            top: 78px;
+            border-radius: 22px 22px 8px 8px;
+        }
+
+        .shirt {
+            width: 42px;
+            height: 70px;
+            background: var(--paper);
+            border-left: 3px solid var(--line);
+            border-right: 3px solid var(--line);
+            position: absolute;
+            left: 42px;
+            top: 84px;
+        }
+
+        .tie {
+            width: 16px;
+            height: 44px;
+            background: var(--gold);
+            border: 3px solid var(--line);
+            position: absolute;
+            left: 55px;
+            top: 96px;
+            clip-path: polygon(50% 0, 100% 18%, 80% 100%, 20% 100%, 0 18%);
+        }
+
+        .book {
+            position: absolute;
+            right: -4px;
+            bottom: 22px;
+            width: 44px;
+            height: 58px;
+            background: var(--red);
+            border: 3px solid var(--line);
+            transform: rotate(8deg);
+        }
+
+        .character-info {
+            display: grid;
+            gap: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            border: 2px solid var(--line);
+            background: var(--paper-2);
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+
+        .info-row strong {
+            color: var(--green);
+        }
+
+        /* LEDGER TAPE */
+        .ledger-tape {
+            margin-top: 38px;
+            border: 3px solid var(--line);
+            background: var(--paper);
+            overflow: hidden;
+            box-shadow: 6px 6px 0 var(--line);
+        }
+
+        .ticker {
+            display: flex;
+            width: max-content;
+            animation: ticker 28s linear infinite;
+        }
+
+        .ticker span {
+            padding: 13px 30px;
+            border-right: 3px solid var(--line);
+            font-weight: 900;
+            color: var(--green);
+            white-space: nowrap;
+        }
+
+        @keyframes ticker {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* SECTION */
+        section {
+            padding: 70px 0;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .section-head h2 {
+            font-size: clamp(36px, 5vw, 64px);
+            line-height: 0.92;
+            letter-spacing: -0.08em;
+        }
+
+        .section-head p {
+            max-width: 460px;
+            color: var(--muted);
+        }
+
+        /* QUEST MAP */
+        .quest-layout {
+            display: grid;
+            grid-template-columns: 1fr 390px;
+            gap: 24px;
+        }
+
+        .map {
+            min-height: 560px;
+            background:
+                radial-gradient(circle at 25% 20%, rgba(201, 138, 36, 0.18), transparent 20%),
+                radial-gradient(circle at 70% 75%, rgba(36, 92, 67, 0.18), transparent 24%),
+                var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map::before {
+            content: "";
+            position: absolute;
+            inset: 26px;
+            border: 2px dashed rgba(29, 27, 22, 0.25);
+            pointer-events: none;
+        }
+
+        .route {
+            position: absolute;
+            height: 4px;
+            background: repeating-linear-gradient(90deg,
+                    var(--line) 0 16px,
+                    transparent 16px 25px);
+            transform-origin: left center;
+            opacity: 0.5;
+        }
+
+        .route.r1 {
+            width: 240px;
+            left: 150px;
+            top: 172px;
+            transform: rotate(18deg);
+        }
+
+        .route.r2 {
+            width: 260px;
+            left: 330px;
+            top: 260px;
+            transform: rotate(-21deg);
+        }
+
+        .route.r3 {
+            width: 250px;
+            left: 190px;
+            top: 370px;
+            transform: rotate(-4deg);
+        }
+
+        .quest-node {
+            position: absolute;
+            width: 138px;
+            background: var(--paper-2);
+            border: 3px solid var(--line);
+            box-shadow: 6px 6px 0 var(--line);
+            padding: 12px;
+            text-align: left;
+            transition: 0.2s ease;
+        }
+
+        .quest-node:hover,
+        .quest-node.active {
+            background: var(--gold);
+            transform: translate(3px, 3px);
+            box-shadow: 3px 3px 0 var(--line);
+        }
+
+        .quest-node small {
+            display: block;
+            font-size: 11px;
+            font-weight: 950;
+            opacity: 0.74;
+            margin-bottom: 4px;
+        }
+
+        .quest-node strong {
+            font-size: 15px;
+            line-height: 1.1;
+            display: block;
+        }
+
+        .node-1 {
+            left: 58px;
+            top: 112px;
+        }
+
+        .node-2 {
+            left: 340px;
+            top: 196px;
+        }
+
+        .node-3 {
+            right: 74px;
+            top: 104px;
+        }
+
+        .node-4 {
+            left: 160px;
+            bottom: 94px;
+        }
+
+        .node-5 {
+            right: 100px;
+            bottom: 100px;
+        }
+
+        .map-label {
+            position: absolute;
+            left: 26px;
+            bottom: 24px;
+            background: var(--green);
+            color: white;
+            border: 3px solid var(--line);
+            padding: 10px 14px;
+            font-weight: 950;
+            box-shadow: 5px 5px 0 var(--line);
+        }
+
+        .quest-detail {
+            background: var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: var(--shadow);
+            padding: 22px;
+            position: sticky;
+            top: 110px;
+            align-self: start;
+        }
+
+        .quest-detail .tag {
+            display: inline-block;
+            background: var(--green);
+            color: white;
+            border: 2px solid var(--line);
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 950;
+            margin-bottom: 18px;
+        }
+
+        .quest-detail h3 {
+            font-size: 32px;
+            line-height: 1;
+            letter-spacing: -0.06em;
+            margin-bottom: 14px;
+        }
+
+        .quest-detail p {
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        .quest-reward {
+            display: grid;
+            gap: 10px;
+        }
+
+        .reward-row {
+            display: flex;
+            justify-content: space-between;
+            border: 2px solid var(--line);
+            background: var(--paper-2);
+            padding: 10px 12px;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        /* STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .game-panel {
+            background: var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: var(--shadow);
+            padding: 24px;
+        }
+
+        .game-panel h3 {
+            font-size: 30px;
+            letter-spacing: -0.06em;
+            margin-bottom: 22px;
+        }
+
+        .stat {
+            margin-bottom: 18px;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 900;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .bar {
+            height: 18px;
+            border: 3px solid var(--line);
+            background: var(--paper-2);
+            overflow: hidden;
+        }
+
+        .fill {
+            height: 100%;
+            width: 0;
+            background:
+                linear-gradient(90deg, var(--green), #5c9a6f);
+            transition: 1.2s ease;
+        }
+
+        .inventory {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .item {
+            border: 3px solid var(--line);
+            background: var(--paper-2);
+            padding: 14px;
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: 0.2s ease;
+        }
+
+        .item:hover {
+            background: var(--green-soft);
+            transform: translateY(-5px);
+        }
+
+        .item-code {
+            font-size: 12px;
+            font-weight: 950;
+            color: var(--muted);
+        }
+
+        .item strong {
+            font-size: 18px;
+            letter-spacing: -0.03em;
+        }
+
+        /* ACHIEVEMENT */
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .achievement-card {
+            background: var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: 7px 7px 0 var(--line);
+            padding: 22px;
+            min-height: 250px;
+            position: relative;
+            transition: 0.2s ease;
+        }
+
+        .achievement-card:hover {
+            transform: rotate(-1deg) translateY(-6px);
+        }
+
+        .medal {
+            width: 58px;
+            height: 58px;
+            background: var(--gold);
+            border: 3px solid var(--line);
+            display: grid;
+            place-items: center;
+            font-weight: 950;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .achievement-card h3 {
+            font-size: 24px;
+            line-height: 1.05;
+            letter-spacing: -0.05em;
+            margin-bottom: 12px;
+        }
+
+        .achievement-card p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .rarity {
+            position: absolute;
+            right: 14px;
+            top: 14px;
+            border: 2px solid var(--line);
+            background: var(--green);
+            color: white;
+            padding: 5px 8px;
+            font-size: 11px;
+            font-weight: 950;
+        }
+
+        /* CONTACT */
+        .final-box {
+            background: var(--green);
+            color: white;
+            border: 3px solid var(--line);
+            box-shadow: var(--shadow);
+            padding: 34px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 30px;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-box::after {
+            content: "FINAL QUEST";
+            position: absolute;
+            right: -30px;
+            bottom: 20px;
+            font-size: 82px;
+            font-weight: 950;
+            letter-spacing: -0.09em;
+            opacity: 0.08;
+        }
+
+        .final-box h2 {
+            font-size: clamp(38px, 6vw, 72px);
+            line-height: 0.9;
+            letter-spacing: -0.08em;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .final-box p {
+            max-width: 650px;
+            color: rgba(255, 255, 255, 0.76);
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-actions {
+            display: grid;
+            gap: 12px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-actions a {
+            background: var(--paper);
+            color: var(--ink);
+            border: 3px solid var(--line);
+            box-shadow: 5px 5px 0 var(--line);
+            padding: 12px 18px;
+            font-weight: 950;
+            white-space: nowrap;
+            transition: 0.2s ease;
+        }
+
+        .contact-actions a:hover {
+            transform: translate(3px, 3px);
+            box-shadow: 2px 2px 0 var(--line);
+        }
+
+        footer {
+            padding: 34px 0 46px;
+            text-align: center;
+            color: var(--muted);
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: 0.7s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 980px) {
+
+            .hero-grid,
+            .quest-layout,
+            .stats-grid,
+            .final-box {
+                grid-template-columns: 1fr;
+            }
+
+            .character-window {
+                transform: none;
+            }
+
+            .quest-detail {
+                position: static;
+            }
+
+            .map {
+                min-height: 700px;
+            }
+
+            .node-1 {
+                left: 30px;
+                top: 90px;
+            }
+
+            .node-2 {
+                left: 190px;
+                top: 230px;
+            }
+
+            .node-3 {
+                right: 35px;
+                top: 105px;
+            }
+
+            .node-4 {
+                left: 40px;
+                bottom: 170px;
+            }
+
+            .node-5 {
+                right: 45px;
+                bottom: 90px;
+            }
+
+            .route {
+                display: none;
+            }
+
+            .achievement-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .nav-links {
+                display: none;
+            }
+
+            .nav-status {
+                display: none;
+            }
+
+            .inventory {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding-top: 58px;
+            }
+
+            .start-box {
+                box-shadow: 6px 6px 0 var(--line);
+            }
+
+            .section-head {
+                flex-direction: column;
+                align-items: start;
+            }
+
+            .quest-node {
+                width: 128px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="start-screen" id="startScreen">
+        <div class="start-box">
+            <h1 class="start-title">
+                Accounting <span>Adventure</span>
+            </h1>
+            <p>
+                Sebuah portofolio mahasiswa akuntansi dalam bentuk game kecil:
+                berisi quest project, character sheet, skill, inventory tools,
+                dan perjalanan belajar menuju dunia profesional.
+            </p>
+            <button class="start-btn" id="startBtn">PRESS START</button>
+        </div>
+    </div>
+
+    <nav class="nav container">
+        <div class="nav-inner">
+            <a href="#" class="brand">
+                <span class="brand-mark">A</span>
+                Accounting Adventure
+            </a>
+
+            <div class="nav-links">
+                <a href="#map">Quest Map</a>
+                <a href="#stats">Stats</a>
+                <a href="#achievement">Achievement</a>
+                <a href="#contact">Contact</a>
+            </div>
+
+            <div class="nav-status">LV. 04 / 1250 XP</div>
+        </div>
+    </nav>
+
+    <header class="hero container">
+        <div class="hero-grid">
+            <div class="reveal">
+                <div class="chapter-label">
+                    <span class="chapter-dot"></span>
+                    CHAPTER 01 — THE LEDGER JOURNEY
+                </div>
+
+                <h1>
+                    Portfolio ini bukan CV. Ini <span>quest perjalanan akuntansi.</span>
+                </h1>
+
+                <p class="hero-desc">
+                    Saya mahasiswa akuntansi yang tertarik pada akuntansi biaya,
+                    perpajakan, audit, analisis laporan keuangan, dan sistem informasi
+                    akuntansi. Di sini, setiap project dibuat seperti misi dalam game.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#map" class="btn primary">Open Quest Map</a>
+                    <a href="#stats" class="btn">View Character Stats</a>
+                </div>
+            </div>
+
+            <aside class="character-window reveal">
+                <div class="window-top">
+                    <span>CHARACTER SHEET</span>
+                    <div class="window-buttons">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+
+                <div class="sprite-stage">
+                    <div class="sprite-shadow"></div>
+
+                    <div class="sprite">
+                        <div class="hair"></div>
+                        <div class="head"></div>
+                        <div class="eye left"></div>
+                        <div class="eye right"></div>
+                        <div class="body"></div>
+                        <div class="shirt"></div>
+                        <div class="tie"></div>
+                        <div class="book"></div>
+                    </div>
+                </div>
+
+                <div class="character-info">
+                    <div class="info-row">
+                        <span>Name</span>
+                        <strong>Imam Mustaqim</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Class</span>
+                        <strong>Accounting Student</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Main Skill</span>
+                        <strong>Cost Analysis</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Side Skill</span>
+                        <strong>Basic Web System</strong>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <div class="ledger-tape reveal">
+            <div class="ticker">
+                <span>Debit: Curiosity +100</span>
+                <span>Credit: Laziness -25</span>
+                <span>Asset: Excel Skill</span>
+                <span>Liability: Deadline Anxiety</span>
+                <span>Equity: Growth Mindset</span>
+                <span>Revenue: New Project</span>
+
+                <span>Debit: Curiosity +100</span>
+                <span>Credit: Laziness -25</span>
+                <span>Asset: Excel Skill</span>
+                <span>Liability: Deadline Anxiety</span>
+                <span>Equity: Growth Mindset</span>
+                <span>Revenue: New Project</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <section id="map" class="container">
+            <div class="section-head reveal">
+                <h2>Quest Map</h2>
+                <p>
+                    <!-- Klik salah satu misi di map untuk melihat detail project.
+                    Bagian ini bikin portofolio terasa lebih hidup dan beda dari template biasa. -->
+                </p>
+            </div>
+
+            <div class="quest-layout">
+                <div class="map reveal">
+                    <div class="route r1"></div>
+                    <div class="route r2"></div>
+                    <div class="route r3"></div>
+
+                    <button class="quest-node node-1 active" data-title="HPP UMKM District" data-type="Cost Accounting"
+                        data-desc="Project ini menghitung Harga Pokok Produksi pada UMKM dengan pendekatan biaya yang lebih realistis. Perhitungan mencakup bahan baku langsung, tenaga kerja langsung, overhead produksi, produk gagal, biaya nonproduksi, hingga rekomendasi harga jual."
+                        data-tool="Excel, Cost Sheet, Cost Classification" data-reward="+350 XP"
+                        data-link="project-hpp-umkm.html">
+                        <small>QUEST 01</small>
+                        <strong>HPP UMKM</strong>
+                    </button>
+
+                    <button class="quest-node node-2" data-title="Financial Ratio Dungeon"
+                        data-type="Financial Analysis"
+                        data-desc="Menganalisis rasio keuangan seperti AR turnover, inventory turnover, fixed asset turnover, profitabilitas, dan likuiditas dari laporan tahunan perusahaan."
+                        data-tool="Annual Report, Excel" data-reward="+420 XP">
+                        <small>QUEST 02</small>
+                        <strong>Ratio Analysis</strong>
+                    </button>
+
+                    <button class="quest-node node-3" data-title="Tax Scroll Mission" data-type="Taxation"
+                        data-desc="Membuat ringkasan konsep perpajakan, simulasi perhitungan pajak sederhana, dan interpretasi transaksi yang berkaitan dengan kewajiban perpajakan."
+                        data-tool="Tax Notes, Spreadsheet" data-reward="+300 XP">
+                        <small>QUEST 03</small>
+                        <strong>Tax Mission</strong>
+                    </button>
+
+                    <button class="quest-node node-4" data-title="Audit Evidence Hunt" data-type="Audit"
+                        data-desc="Mengidentifikasi risiko audit, bukti audit, prosedur audit, serta membuat analisis sederhana terhadap kasus perusahaan atau laporan tahunan."
+                        data-tool="Audit Working Paper" data-reward="+390 XP">
+                        <small>QUEST 04</small>
+                        <strong>Audit Hunt</strong>
+                    </button>
+
+                    <button class="quest-node node-5" data-title="Accounting System Builder"
+                        data-type="Accounting Information System"
+                        data-desc="Merancang sistem sederhana untuk order, pembayaran, pelanggan, persediaan, dan laporan. Bisa dikembangkan dengan Laravel, database, flowchart, dan use case diagram."
+                        data-tool="Laravel, SQL, Flowchart" data-reward="+520 XP">
+                        <small>QUEST 05</small>
+                        <strong>SIA Builder</strong>
+                    </button>
+
+                    <div class="map-label">WORLD MAP: ACCOUNTING CAMPUS</div>
+                </div>
+
+                <aside class="quest-detail reveal">
+                    <span class="tag" id="detailType">Cost Accounting</span>
+                    <h3 id="detailTitle">HPP UMKM Quest</h3>
+                    <p id="detailDesc">
+                        Menghitung biaya bahan baku, tenaga kerja langsung, overhead pabrik,
+                        HPP per unit, sampai rekomendasi harga jual. Cocok untuk menunjukkan
+                        kemampuan akuntansi biaya secara praktis.
+                    </p>
+
+                    <div class="quest-reward">
+                        <div class="reward-row">
+                            <span>Tools</span>
+                            <strong id="detailTool">Excel, Cost Sheet</strong>
+                        </div>
+                        <div class="reward-row">
+                            <span>Reward</span>
+                            <strong id="detailReward">+350 XP</strong>
+                        </div>
+                        <div class="reward-row">
+                            <span>Status</span>
+                            <strong>Ready to Showcase</strong>
+                        </div>
+                        <a href="project-hpp-umkm.html" class="detail-btn" id="detailLink">
+                            Lihat Detail Project
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section id="stats" class="container">
+            <div class="section-head reveal">
+                <h2>Character Stats</h2>
+                <p>
+                    <!-- Skill dibuat seperti atribut karakter game, tapi tetap relevan
+                    untuk portofolio mahasiswa akuntansi. -->
+                </p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="game-panel reveal">
+                    <h3>Skill Tree</h3>
+
+                    <div class="stat">
+                        <div class="stat-top">
+                            <span>Cost Accounting</span>
+                            <strong>86</strong>
+                        </div>
+                        <div class="bar">
+                            <div class="fill" data-width="86%"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-top">
+                            <span>Financial Analysis</span>
+                            <strong>82</strong>
+                        </div>
+                        <div class="bar">
+                            <div class="fill" data-width="82%"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-top">
+                            <span>Taxation</span>
+                            <strong>78</strong>
+                        </div>
+                        <div class="bar">
+                            <div class="fill" data-width="78%"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-top">
+                            <span>Audit Basic</span>
+                            <strong>76</strong>
+                        </div>
+                        <div class="bar">
+                            <div class="fill" data-width="76%"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-top">
+                            <span>Accounting System</span>
+                            <strong>80</strong>
+                        </div>
+                        <div class="bar">
+                            <div class="fill" data-width="80%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-panel reveal">
+                    <h3>Inventory</h3>
+
+                    <div class="inventory">
+                        <div class="item">
+                            <span class="item-code">ITEM 01</span>
+                            <strong>Excel Workbook</strong>
+                            <span>Untuk costing, budgeting, dan rasio.</span>
+                        </div>
+
+                        <div class="item">
+                            <span class="item-code">ITEM 02</span>
+                            <strong>Annual Report</strong>
+                            <span>Bahan analisis laporan keuangan.</span>
+                        </div>
+
+                        <div class="item">
+                            <span class="item-code">ITEM 03</span>
+                            <strong>Flowchart Map</strong>
+                            <span>Untuk membaca alur sistem.</span>
+                        </div>
+
+                        <div class="item">
+                            <span class="item-code">ITEM 04</span>
+                            <strong>Laravel Starter</strong>
+                            <span>Bekal membuat sistem akuntansi.</span>
+                        </div>
+
+                        <div class="item">
+                            <span class="item-code">ITEM 05</span>
+                            <strong>Tax Notes</strong>
+                            <span>Catatan materi perpajakan.</span>
+                        </div>
+
+                        <div class="item">
+                            <span class="item-code">ITEM 06</span>
+                            <strong>Audit Checklist</strong>
+                            <span>Dasar prosedur dan bukti audit.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="achievement" class="container">
+            <div class="section-head reveal">
+                <h2>Achievement Room</h2>
+                <p>
+                    <!-- Bagian ini bisa kamu isi dengan tugas besar, sertifikat, project,
+                    pengalaman magang, atau hasil belajar pribadi. -->
+                </p>
+            </div>
+
+            <div class="achievement-grid">
+                <article class="achievement-card reveal">
+                    <span class="rarity">RARE</span>
+                    <div class="medal">01</div>
+                    <h3>Completed Costing Project</h3>
+                    <p>
+                        Menganalisis biaya produksi dan menyusun perhitungan HPP
+                        untuk produk atau UMKM.
+                    </p>
+                </article>
+
+                <article class="achievement-card reveal">
+                    <span class="rarity">EPIC</span>
+                    <div class="medal">02</div>
+                    <h3>Built System Prototype</h3>
+                    <p>
+                        Merancang sistem informasi akuntansi sederhana dengan alur transaksi,
+                        pembayaran, dan laporan.
+                    </p>
+                </article>
+
+                <article class="achievement-card reveal">
+                    <span class="rarity">ACTIVE</span>
+                    <div class="medal">03</div>
+                    <h3>Learning Web for Accounting</h3>
+                    <p>
+                        Menggabungkan akuntansi dengan coding dasar agar bisa membuat
+                        project yang lebih aplikatif.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section id="contact" class="container">
+            <div class="final-box reveal">
+                <div>
+                    <h2>Final Quest: Connect</h2>
+                    <p>
+                        Terbuka untuk diskusi project, kolaborasi akademik, magang,
+                        atau pengembangan sistem sederhana yang berkaitan dengan akuntansi.
+                    </p>
+                </div>
+
+                <div class="contact-actions">
+                    <a href="mailto:emailkamu@gmail.com">Send Email</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="#">GitHub</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        © 2026 Imam Mustaqim — Accounting Adventure Portfolio
+    </footer>
+
+    <script>
+        const startScreen = document.getElementById("startScreen");
+        const startBtn = document.getElementById("startBtn");
+
+        // Kalau sebelumnya sudah pernah klik PRESS START,
+        // start screen langsung disembunyikan saat halaman dibuka lagi
+        if (sessionStorage.getItem("portfolioStarted") === "true") {
+            startScreen.classList.add("hide");
+        }
+
+        startBtn.addEventListener("click", () => {
+            startScreen.classList.add("hide");
+            sessionStorage.setItem("portfolioStarted", "true");
+        });
+
+        const nodes = document.querySelectorAll(".quest-node");
+        const detailTitle = document.getElementById("detailTitle");
+        const detailType = document.getElementById("detailType");
+        const detailDesc = document.getElementById("detailDesc");
+        const detailTool = document.getElementById("detailTool");
+        const detailReward = document.getElementById("detailReward");
+        const detailLink = document.getElementById("detailLink");
+
+        nodes.forEach((node) => {
+            node.addEventListener("click", () => {
+                nodes.forEach((item) => item.classList.remove("active"));
+                node.classList.add("active");
+
+                detailTitle.textContent = node.dataset.title;
+                detailType.textContent = node.dataset.type;
+                detailDesc.textContent = node.dataset.desc;
+                detailTool.textContent = node.dataset.tool;
+                detailReward.textContent = node.dataset.reward;
+
+                detailLink.href = node.dataset.link || "#";
+            });
+        });
+
+        const reveals = document.querySelectorAll(".reveal");
+        const fills = document.querySelectorAll(".fill");
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("active");
+
+                    if (entry.target.classList.contains("game-panel")) {
+                        fills.forEach((fill) => {
+                            fill.style.width = fill.dataset.width;
+                        });
+                    }
+                }
+            });
+        }, {
+            threshold: 0.16
+        });
+
+        reveals.forEach((el) => observer.observe(el));
+    </script>
+
+</body>
+
+</html>

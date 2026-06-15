@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project HPP UMKM — Risol Mayo</title>
+
+    <style>
+        :root {
+            --bg: #e9eee7;
+            --ink: #132019;
+            --muted: #68746b;
+            --paper: #fbfff8;
+            --paper-2: #dfe9dc;
+            --line: #132019;
+            --green: #1f6f4a;
+            --green-soft: #d6eadc;
+            --gold: #b98932;
+            --red: #9d4d43;
+            --blue: #315d70;
+            --shadow: 10px 10px 0 #132019;
+            --soft-shadow: 0 24px 60px rgba(19, 32, 25, 0.16);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background:
+                linear-gradient(rgba(19, 32, 25, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(19, 32, 25, 0.04) 1px, transparent 1px),
+                radial-gradient(circle at 15% 10%, rgba(31, 111, 74, 0.16), transparent 28%),
+                radial-gradient(circle at 88% 20%, rgba(185, 137, 50, 0.16), transparent 30%),
+                var(--bg);
+            background-size: 28px 28px, 28px 28px, auto, auto;
+            color: var(--ink);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        input {
+            font: inherit;
+        }
+
+        .container {
+            width: min(1160px, 92%);
+            margin: auto;
+        }
+
+        .nav {
+            position: sticky;
+            top: 16px;
+            z-index: 50;
+            padding-top: 16px;
+        }
+
+        .nav-inner {
+            background: rgba(251, 255, 248, 0.82);
+            backdrop-filter: blur(14px);
+            border: 3px solid var(--line);
+            box-shadow: 6px 6px 0 var(--line);
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 950;
+            letter-spacing: -0.04em;
+        }
+
+        .brand-mark {
+            width: 34px;
+            height: 34px;
+            background: var(--green);
+            border: 3px solid var(--line);
+            display: grid;
+            place-items: center;
+            color: white;
+            font-weight: 950;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--muted);
+        }
+
+        .nav-links a:hover {
+            color: var(--green);
+        }
+
+        .xp {
+            background: var(--paper-2);
+            border: 2px solid var(--line);
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 950;
+        }
+
+        .hero {
+            padding: 82px 0 54px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 38px;
+            align-items: center;
+        }
+
+        .label {
+            display: inline-flex;
+            gap: 10px;
+            align-items: center;
+            background: var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: 4px 4px 0 var(--line);
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 950;
+            margin-bottom: 22px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: var(--gold);
+            border: 2px solid var(--line);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0.35;
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 7vw, 92px);
+            line-height: 0.9;
+            letter-spacing: -0.085em;
+            max-width: 900px;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: var(--green);
+            text-shadow: 4px 4px 0 rgba(185, 137, 50, 0.22);
+        }
+
+        .hero-desc {
+            max-width: 720px;
+            color: var(--muted);
+            font-size: 17px;
+            margin-bottom: 26px;
+        }
+
+        .dialog {
+            max-width: 680px;
+            background: var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: 6px 6px 0 var(--line);
+            padding: 18px 20px;
+            position: relative;
+            margin-bottom: 26px;
+        }
+
+        .dialog::before {
+            content: "NPC UMKM";
+            position: absolute;
+            top: -17px;
+            left: 18px;
+            background: var(--green);
+            color: white;
+            border: 3px solid var(--line);
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 950;
+        }
+
+        .dialog p {
+            color: var(--ink);
+            font-weight: 650;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid var(--line);
+            box-shadow: 5px 5px 0 var(--line);
+            padding: 13px 18px;
+            font-weight: 950;
+            background: var(--paper);
+            transition: 0.18s ease;
+        }
+
+        .btn.primary {
+            background: var(--green);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translate(3px, 3px);
+            box-shadow: 2px 2px 0 var(--line);
+        }
+
+        .quest-card {
+            background: var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            transform: rotate(1deg);
+        }
+
+        .quest-top {
+            background: var(--green);
+            color: white;
+            border: 3px solid var(--line);
+            padding: 10px 12px;
+            font-weight: 950;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .quest-visual {
+            min-height: 230px;
+            border: 3px solid var(--line);
+            background:
+                linear-gradient(rgba(19, 32, 25, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(19, 32, 25, 0.08) 1px, transparent 1px),
+                var(--green-soft);
+            background-size: 18px 18px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coin {
+            width: 110px;
+            height: 110px;
+            background: var(--gold);
+            border: 4px solid var(--line);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 38px;
+            font-weight: 950;
+            box-shadow: 8px 8px 0 rgba(19, 32, 25, 0.28);
+            animation: float 2.6s ease-in-out infinite;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes float {
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .quest-visual::after {
+            content: "";
+            position: absolute;
+            width: 175px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(19, 32, 25, 0.18);
+            bottom: 48px;
+        }
+
+        .quest-info {
+            display: grid;
+            gap: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            border: 2px solid var(--line);
+            background: var(--paper-2);
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+
+        .info-row strong {
+            text-align: right;
+            color: var(--green);
+        }
+
+        section {
+            padding: 62px 0;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 22px;
+            margin-bottom: 28px;
+        }
+
+        .section-head h2 {
+            font-size: clamp(34px, 5vw, 60px);
+            line-height: 0.92;
+            letter-spacing: -0.075em;
+        }
+
+        .section-head p {
+            max-width: 520px;
+            color: var(--muted);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .panel {
+            background: var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: var(--shadow);
+            padding: 24px;
+        }
+
+        .panel h3 {
+            font-size: 28px;
+            letter-spacing: -0.05em;
+            margin-bottom: 14px;
+        }
+
+        .panel p {
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+
+        .mission-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .mission {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 12px;
+            align-items: start;
+            background: var(--paper-2);
+            border: 2px solid var(--line);
+            padding: 12px;
+        }
+
+        .mission span {
+            width: 30px;
+            height: 30px;
+            background: var(--green);
+            color: white;
+            border: 2px solid var(--line);
+            display: grid;
+            place-items: center;
+            font-size: 13px;
+            font-weight: 950;
+        }
+
+        .mission p {
+            margin: 0;
+            color: var(--ink);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .summary-card {
+            background: var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: 7px 7px 0 var(--line);
+            padding: 18px;
+            transition: 0.2s ease;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .summary-card small {
+            display: block;
+            color: var(--muted);
+            font-weight: 950;
+            margin-bottom: 8px;
+        }
+
+        .summary-card strong {
+            display: block;
+            color: var(--green);
+            font-size: 28px;
+            line-height: 1;
+            letter-spacing: -0.05em;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            background: var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: var(--shadow);
+            margin-bottom: 28px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 820px;
+        }
+
+        th,
+        td {
+            border-bottom: 2px solid var(--line);
+            border-right: 2px solid var(--line);
+            padding: 12px 14px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background: var(--green);
+            color: white;
+            font-size: 14px;
+            letter-spacing: 0.02em;
+        }
+
+        td {
+            background: var(--paper);
+            color: var(--ink);
+        }
+
+        tr:nth-child(even) td {
+            background: var(--paper-2);
+        }
+
+        td:last-child,
+        th:last-child {
+            border-right: none;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .money-input,
+        .small-input {
+            width: 100%;
+            border: 2px solid var(--line);
+            background: var(--paper);
+            padding: 9px 10px;
+            color: var(--ink);
+            outline: none;
+            font-weight: 800;
+        }
+
+        .money-input:focus,
+        .small-input:focus {
+            background: var(--green-soft);
+            box-shadow: 0 0 0 4px rgba(31, 111, 74, 0.12);
+        }
+
+        .subtotal {
+            font-weight: 950;
+            color: var(--green);
+            white-space: nowrap;
+        }
+
+        .section-total {
+            background: var(--green) !important;
+            color: white !important;
+            font-weight: 950;
+        }
+
+        .calc-layout {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .control-panel {
+            background: var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: var(--shadow);
+            padding: 24px;
+        }
+
+        .control-panel h3 {
+            font-size: 28px;
+            letter-spacing: -0.05em;
+            margin-bottom: 16px;
+        }
+
+        .input-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .input-group {
+            display: grid;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            font-weight: 950;
+        }
+
+        .input-group input {
+            border: 2px solid var(--line);
+            background: var(--paper-2);
+            padding: 12px;
+            outline: none;
+            font-weight: 800;
+            color: var(--ink);
+        }
+
+        .input-group input:focus {
+            background: var(--green-soft);
+            box-shadow: 0 0 0 4px rgba(31, 111, 74, 0.12);
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .result-card {
+            background: var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: 7px 7px 0 var(--line);
+            padding: 20px;
+            transition: 0.2s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 7px 12px 0 var(--line);
+        }
+
+        .result-card.wide {
+            grid-column: span 2;
+            background: var(--green);
+            color: white;
+        }
+
+        .result-card small {
+            display: block;
+            font-weight: 950;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .result-card.wide small {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .result-card strong {
+            display: block;
+            font-size: clamp(28px, 4vw, 42px);
+            line-height: 1;
+            letter-spacing: -0.06em;
+            color: var(--green);
+        }
+
+        .result-card.wide strong {
+            color: white;
+        }
+
+        .result-card p {
+            color: var(--muted);
+            margin-top: 8px;
+        }
+
+        .result-card.wide p {
+            color: rgba(255, 255, 255, 0.78);
+        }
+
+        .analysis-box {
+            background: var(--paper);
+            border: 3px solid var(--line);
+            box-shadow: var(--shadow);
+            padding: 26px;
+        }
+
+        .analysis-box h3 {
+            font-size: 30px;
+            letter-spacing: -0.05em;
+            margin-bottom: 14px;
+        }
+
+        .analysis-box p {
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+
+        .status-pill {
+            display: inline-block;
+            border: 2px solid var(--line);
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 950;
+            margin-bottom: 16px;
+            background: var(--paper-2);
+            color: var(--ink);
+        }
+
+        .status-safe {
+            background: var(--green);
+            color: white;
+        }
+
+        .status-warning {
+            background: var(--gold);
+            color: var(--ink);
+        }
+
+        .status-danger {
+            background: var(--red);
+            color: white;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .skill-pill {
+            background: var(--green-soft);
+            border: 2px solid var(--line);
+            padding: 9px 12px;
+            font-weight: 900;
+            font-size: 14px;
+            transition: 0.18s ease;
+        }
+
+        .skill-pill:hover {
+            background: var(--green);
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: 0 0 0 4px rgba(31, 111, 74, 0.14);
+        }
+
+        .conclusion {
+            background: var(--green);
+            color: white;
+            border: 3px solid var(--line);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .conclusion::after {
+            content: "QUEST CLEAR";
+            position: absolute;
+            right: -20px;
+            bottom: 0;
+            font-size: 78px;
+            font-weight: 950;
+            letter-spacing: -0.08em;
+            opacity: 0.08;
+        }
+
+        .conclusion h2 {
+            font-size: clamp(36px, 5vw, 62px);
+            line-height: 0.92;
+            letter-spacing: -0.075em;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .conclusion p {
+            max-width: 820px;
+            color: rgba(255, 255, 255, 0.82);
+            position: relative;
+            z-index: 2;
+        }
+
+        footer {
+            padding: 34px 0 44px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: 0.7s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 980px) {
+
+            .hero-grid,
+            .grid-2,
+            .calc-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .quest-card {
+                transform: none;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 760px) {
+
+            .nav-links,
+            .xp {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 58px;
+            }
+
+            .summary-grid,
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-card.wide {
+                grid-column: span 1;
+            }
+
+            .panel,
+            .control-panel,
+            .analysis-box,
+            .conclusion {
+                box-shadow: 6px 6px 0 var(--line);
+            }
+
+            .section-head {
+                flex-direction: column;
+                align-items: start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="nav container">
+        <div class="nav-inner">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">A</span>
+                Accounting Adventure
+            </a>
+
+            <div class="nav-links">
+                <a href="#brief">Brief</a>
+                <a href="#data">Data Biaya</a>
+                <a href="#hitung">Hasil HPP</a>
+                <a href="#analisis">Analisis</a>
+            </div>
+
+            <div class="xp">QUEST 01 / +350 XP</div>
+        </div>
+    </nav>
+
+    <header class="hero container">
+        <div class="hero-grid">
+            <div class="reveal">
+                <div class="label">
+                    <span class="dot"></span>
+                    QUEST 01 — COST ACCOUNTING
+                </div>
+
+                <h1>
+                    HPP Risol Mayo: <span>menghitung harga jual yang benar-benar aman.</span>
+                </h1>
+
+                <p class="hero-desc">
+                    Project ini menghitung Harga Pokok Produksi pada UMKM risol mayo dengan pendekatan biaya yang lebih
+                    realistis.
+                    Perhitungan mencakup bahan baku langsung, tenaga kerja langsung, overhead produksi, produk gagal,
+                    biaya nonproduksi, hingga simulasi laba bersih.
+                </p>
+
+                <div class="dialog">
+                    <p>
+                        “Kalau cuma menghitung bahan utama, produk terlihat untung. Tapi setelah gas, kemasan, listrik,
+                        tenaga kerja,
+                        dan produk gagal dihitung, harga jual bisa berubah total.”
+                    </p>
+                </div>
+
+                <div class="hero-actions">
+                    <a href="#data" class="btn primary">Lihat Data Biaya</a>
+                    <a href="#hitung" class="btn">Cek Hasil HPP</a>
+                </div>
+            </div>
+
+            <aside class="quest-card reveal">
+                <div class="quest-top">
+                    <span>PROJECT CARD</span>
+                    <span>LV. 01</span>
+                </div>
+
+                <div class="quest-visual">
+                    <div class="coin">HPP</div>
+                </div>
+
+                <div class="quest-info">
+                    <div class="info-row">
+                        <span>Produk</span>
+                        <strong>Risol Mayo</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Produksi Awal</span>
+                        <strong id="cardProduksi">100 pcs</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Layak Jual</span>
+                        <strong id="cardLayak">95 pcs</strong>
+                    </div>
+                    <div class="info-row">
+                        <span>Harga Saran</span>
+                        <strong id="cardHarga">Rp7.000</strong>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </header>
+
+    <main>
+
+        <section id="brief" class="container">
+            <div class="section-head reveal">
+                <h2>Project Brief</h2>
+                <p>
+                    <!-- Halaman ini dibuat seperti laporan mini project, tapi tetap interaktif dan cocok dimasukkan ke
+                    portofolio. -->
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="panel reveal">
+                    <h3>Latar Belakang</h3>
+                    <p>
+                        Banyak UMKM makanan menentukan harga jual berdasarkan perkiraan, harga pesaing, atau sekadar
+                        menambahkan laba
+                        dari bahan baku utama. Padahal dalam produksi nyata, biaya kecil seperti gas, listrik, kemasan,
+                        sabun cuci,
+                        dan penyusutan alat tetap memengaruhi keuntungan.
+                    </p>
+                    <p>
+                        <!-- Selain itu, produk gagal atau rusak juga harus diperhitungkan. Jika produksi awal 100 pcs tetapi
+                        yang layak
+                        dijual hanya 95 pcs, maka biaya produksi seharusnya dibebankan pada 95 pcs tersebut. -->
+                    </p>
+                </article>
+
+                <article class="panel reveal">
+                    <h3>Mission Objective</h3>
+
+                    <div class="mission-list">
+                        <div class="mission">
+                            <span>01</span>
+                            <p>Mengidentifikasi biaya bahan baku langsung secara rinci.</p>
+                        </div>
+
+                        <div class="mission">
+                            <span>02</span>
+                            <p>Menghitung tenaga kerja langsung, meskipun produksi dikerjakan pemilik.</p>
+                        </div>
+
+                        <div class="mission">
+                            <span>03</span>
+                            <p>Memasukkan overhead produksi seperti gas, listrik, kebersihan, dan penyusutan alat.</p>
+                        </div>
+
+                        <div class="mission">
+                            <span>04</span>
+                            <p>Menghitung HPP per unit, full cost, harga jual rekomendasi, dan estimasi laba bersih.</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="section-head reveal">
+                <h2>Ringkasan Awal</h2>
+                <p>
+                    Ringkasan berubah otomatis mengikuti input biaya dan asumsi produksi.
+                </p>
+            </div>
+
+            <div class="summary-grid reveal">
+                <article class="summary-card">
+                    <small>Total Biaya Produksi</small>
+                    <strong id="sumProduksi">Rp467.400</strong>
+                </article>
+
+                <article class="summary-card">
+                    <small>HPP Layak Jual</small>
+                    <strong id="sumHpp">Rp4.920</strong>
+                </article>
+
+                <article class="summary-card">
+                    <small>Full Cost per Unit</small>
+                    <strong id="sumFullCost">Rp5.131</strong>
+                </article>
+
+                <article class="summary-card">
+                    <small>Harga Jual Saran</small>
+                    <strong id="sumHarga">Rp7.000</strong>
+                </article>
+            </div>
+        </section>
+
+        <section id="data" class="container">
+            <div class="section-head reveal">
+                <h2>Data Biaya Produksi</h2>
+                <p>
+                    Semua subtotal dan hasil HPP akan otomatis dihitung ulang.
+                </p>
+            </div>
+
+            <div class="table-wrap reveal">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="4">A. Biaya Bahan Baku Langsung</th>
+                        </tr>
+                        <tr>
+                            <th>Komponen</th>
+                            <th>Keterangan Lapangan</th>
+                            <th>Jumlah Biaya</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Kulit risol</td>
+                            <td>100 lembar x Rp500</td>
+                            <td><input class="money-input bahan" type="number" value="50000"></td>
+                            <td class="subtotal bahan-sub">Rp50.000</td>
+                        </tr>
+                        <tr>
+                            <td>Sosis</td>
+                            <td>25 pcs x Rp2.500</td>
+                            <td><input class="money-input bahan" type="number" value="62500"></td>
+                            <td class="subtotal bahan-sub">Rp62.500</td>
+                        </tr>
+                        <tr>
+                            <td>Telur rebus</td>
+                            <td>25 butir x Rp2.000</td>
+                            <td><input class="money-input bahan" type="number" value="50000"></td>
+                            <td class="subtotal bahan-sub">Rp50.000</td>
+                        </tr>
+                        <tr>
+                            <td>Mayones</td>
+                            <td>Pemakaian sekitar 800 gram</td>
+                            <td><input class="money-input bahan" type="number" value="30400"></td>
+                            <td class="subtotal bahan-sub">Rp30.400</td>
+                        </tr>
+                        <tr>
+                            <td>Keju</td>
+                            <td>Estimasi pemakaian isian</td>
+                            <td><input class="money-input bahan" type="number" value="20000"></td>
+                            <td class="subtotal bahan-sub">Rp20.000</td>
+                        </tr>
+                        <tr>
+                            <td>Tepung terigu</td>
+                            <td>Pemakaian sebagian untuk pelapis</td>
+                            <td><input class="money-input bahan" type="number" value="6000"></td>
+                            <td class="subtotal bahan-sub">Rp6.000</td>
+                        </tr>
+                        <tr>
+                            <td>Tepung panir</td>
+                            <td>Pemakaian produksi satu batch</td>
+                            <td><input class="money-input bahan" type="number" value="37500"></td>
+                            <td class="subtotal bahan-sub">Rp37.500</td>
+                        </tr>
+                        <tr>
+                            <td>Telur pelapis</td>
+                            <td>5 butir x Rp2.000</td>
+                            <td><input class="money-input bahan" type="number" value="10000"></td>
+                            <td class="subtotal bahan-sub">Rp10.000</td>
+                        </tr>
+                        <tr>
+                            <td>Minyak goreng</td>
+                            <td>Estimasi minyak yang terpakai</td>
+                            <td><input class="money-input bahan" type="number" value="24000"></td>
+                            <td class="subtotal bahan-sub">Rp24.000</td>
+                        </tr>
+                        <tr>
+                            <td>Bumbu tambahan</td>
+                            <td>Garam, lada, penyedap, dll.</td>
+                            <td><input class="money-input bahan" type="number" value="8000"></td>
+                            <td class="subtotal bahan-sub">Rp8.000</td>
+                        </tr>
+                        <tr>
+                            <td>Kemasan primer</td>
+                            <td>Kemasan yang melekat langsung pada produk</td>
+                            <td><input class="money-input bahan" type="number" value="40000"></td>
+                            <td class="subtotal bahan-sub">Rp40.000</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="section-total">Total Bahan Baku Langsung</td>
+                            <td class="section-total" id="totalBahan">Rp338.400</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-wrap reveal">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="4">B. Biaya Tenaga Kerja Langsung</th>
+                        </tr>
+                        <tr>
+                            <th>Komponen</th>
+                            <th>Keterangan Lapangan</th>
+                            <th>Jumlah Biaya</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tenaga kerja produksi</td>
+                            <td>2 orang x 5 jam x Rp10.000</td>
+                            <td><input class="money-input tenaga" type="number" value="100000"></td>
+                            <td class="subtotal tenaga-sub">Rp100.000</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="section-total">Total Tenaga Kerja Langsung</td>
+                            <td class="section-total" id="totalTenaga">Rp100.000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-wrap reveal">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="4">C. Biaya Overhead Produksi</th>
+                        </tr>
+                        <tr>
+                            <th>Komponen</th>
+                            <th>Keterangan Lapangan</th>
+                            <th>Jumlah Biaya</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Gas LPG</td>
+                            <td>Estimasi pemakaian sekitar 1/2 tabung</td>
+                            <td><input class="money-input overhead" type="number" value="11000"></td>
+                            <td class="subtotal overhead-sub">Rp11.000</td>
+                        </tr>
+                        <tr>
+                            <td>Listrik dan air</td>
+                            <td>Pemakaian mixer, lampu, air cuci alat</td>
+                            <td><input class="money-input overhead" type="number" value="7000"></td>
+                            <td class="subtotal overhead-sub">Rp7.000</td>
+                        </tr>
+                        <tr>
+                            <td>Penyusutan alat</td>
+                            <td>Wajan, kompor, baskom, spatula, dll.</td>
+                            <td><input class="money-input overhead" type="number" value="6000"></td>
+                            <td class="subtotal overhead-sub">Rp6.000</td>
+                        </tr>
+                        <tr>
+                            <td>Kebersihan/perawatan</td>
+                            <td>Sabun cuci, tisu, lap, dll.</td>
+                            <td><input class="money-input overhead" type="number" value="5000"></td>
+                            <td class="subtotal overhead-sub">Rp5.000</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="section-total">Total Overhead Produksi</td>
+                            <td class="section-total" id="totalOverhead">Rp29.000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-wrap reveal">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="4">D. Biaya Nonproduksi</th>
+                        </tr>
+                        <tr>
+                            <th>Komponen</th>
+                            <th>Keterangan Lapangan</th>
+                            <th>Jumlah Biaya</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Transportasi kecil</td>
+                            <td>Belanja bahan atau antar produk</td>
+                            <td><input class="money-input nonprod" type="number" value="10000"></td>
+                            <td class="subtotal nonprod-sub">Rp10.000</td>
+                        </tr>
+                        <tr>
+                            <td>Promosi sederhana</td>
+                            <td>Stiker, foto produk, marketplace, dll.</td>
+                            <td><input class="money-input nonprod" type="number" value="5000"></td>
+                            <td class="subtotal nonprod-sub">Rp5.000</td>
+                        </tr>
+                        <tr>
+                            <td>Administrasi kecil</td>
+                            <td>Plastik tambahan, nota, dan biaya kecil lain</td>
+                            <td><input class="money-input nonprod" type="number" value="5000"></td>
+                            <td class="subtotal nonprod-sub">Rp5.000</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="section-total">Total Biaya Nonproduksi</td>
+                            <td class="section-total" id="totalNonprod">Rp20.000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="hitung" class="container">
+            <div class="section-head reveal">
+                <h2>Hasil Perhitungan HPP</h2>
+                <p>
+                    Asumsi produksi, margin, dan harga jual bisa diubah. Hasilnya akan otomatis menyesuaikan.
+                </p>
+            </div>
+
+            <div class="calc-layout">
+                <div class="control-panel reveal">
+                    <h3>Asumsi Produksi</h3>
+
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="produksiAwal">Jumlah Produksi Awal</label>
+                            <input type="number" id="produksiAwal" value="100">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="produkGagal">Produk Gagal/Rusak</label>
+                            <input type="number" id="produkGagal" value="5">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="margin">Margin Laba yang Diinginkan (%)</label>
+                            <input type="number" id="margin" value="35">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="hargaAktual">Harga Jual Aktual/Rencana</label>
+                            <input type="number" id="hargaAktual" value="7000">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-grid reveal">
+                    <article class="result-card">
+                        <small>Total Biaya Produksi</small>
+                        <strong id="hasilProduksi">Rp467.400</strong>
+                        <p>Bahan baku + tenaga kerja langsung + overhead produksi.</p>
+                    </article>
+
+                    <article class="result-card">
+                        <small>Produk Layak Jual</small>
+                        <strong id="hasilLayak">95 pcs</strong>
+                        <p>Produksi awal dikurangi produk gagal/rusak.</p>
+                    </article>
+
+                    <article class="result-card">
+                        <small>HPP per Unit Produksi Awal</small>
+                        <strong id="hppAwal">Rp4.674</strong>
+                        <p>Jika produk gagal belum diperhitungkan.</p>
+                    </article>
+
+                    <article class="result-card">
+                        <small>HPP per Unit Layak Jual</small>
+                        <strong id="hppLayak">Rp4.920</strong>
+                        <p>HPP yang lebih realistis di lapangan.</p>
+                    </article>
+
+                    <article class="result-card">
+                        <small>Full Cost per Unit</small>
+                        <strong id="fullCost">Rp5.131</strong>
+                        <p>HPP ditambah biaya nonproduksi per unit.</p>
+                    </article>
+
+                    <article class="result-card">
+                        <small>Harga Jual Rekomendasi</small>
+                        <strong id="hargaRekomendasi">Rp6.642</strong>
+                        <p>Harga berdasarkan HPP dan margin laba.</p>
+                    </article>
+
+                    <article class="result-card wide">
+                        <small>Estimasi Laba Bersih per Batch</small>
+                        <strong id="labaBersih">Rp177.600</strong>
+                        <p>
+                            Laba setelah mempertimbangkan HPP, produk layak jual, harga jual aktual, dan biaya
+                            nonproduksi.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="analisis" class="container">
+            <div class="section-head reveal">
+                <h2>Analisis Project</h2>
+                <p>
+                    <!-- Bagian ini bisa langsung kamu tampilkan sebagai narasi hasil project di portofolio. -->
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="analysis-box reveal">
+                    <h3>Interpretasi</h3>
+
+                    <div class="status-pill" id="statusHarga">
+                        Menunggu Perhitungan
+                    </div>
+
+                    <p id="analysisText">
+                        Interpretasi akan menyesuaikan input biaya dan harga jual.
+                    </p>
+
+                    <p id="riskText">
+                        Risiko biaya akan dianalisis berdasarkan jumlah produk gagal dan struktur biaya.
+                    </p>
+
+                    <p id="pricingText">
+                        Analisis harga jual akan muncul setelah data dihitung.
+                    </p>
+
+                    <p id="profitText">
+                        Estimasi laba akan mengikuti harga jual aktual yang dimasukkan.
+                    </p>
+                </article>
+
+                <article class="analysis-box reveal">
+                    <h3>Skill yang Ditunjukkan</h3>
+                    <p>
+                        Project ini menunjukkan kemampuan dalam menyusun cost sheet, mengklasifikasikan biaya,
+                        menghitung HPP, dan menghubungkan hasil perhitungan dengan keputusan harga jual.
+                    </p>
+
+                    <div class="skill-list">
+                        <span class="skill-pill">Akuntansi Biaya</span>
+                        <span class="skill-pill">Cost Classification</span>
+                        <span class="skill-pill">HPP per Unit</span>
+                        <span class="skill-pill">Produk Gagal</span>
+                        <span class="skill-pill">Full Costing</span>
+                        <span class="skill-pill">Pricing Decision</span>
+                        <span class="skill-pill">Excel Cost Sheet</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="conclusion reveal">
+                <h2>Quest Clear: Kesimpulan</h2>
+                <p id="conclusionText">
+                    Perhitungan HPP membantu UMKM mengetahui batas harga jual yang aman. Dalam simulasi ini,
+                    HPP risol mayo setelah memperhitungkan produk gagal adalah Rp4.920 per pcs, sedangkan full cost per
+                    unit
+                    adalah Rp5.131. Dengan harga jual Rp7.000, UMKM masih memperoleh estimasi laba bersih sekitar
+                    Rp177.600
+                    per batch produksi.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        © 2026 Imam Mustaqim — Project HPP/ Accounting Adventure
+    </footer>
+
+    <script>
+        const rupiah = (number) => {
+            return new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                maximumFractionDigits: 0
+            }).format(Math.round(number || 0));
+        };
+
+        const numberFormat = (number) => {
+            return new Intl.NumberFormat("id-ID").format(Math.round(number || 0));
+        };
+
+        const getNumber = (element) => {
+            return Number(element.value) || 0;
+        };
+
+        const bahanInputs = document.querySelectorAll(".bahan");
+        const tenagaInputs = document.querySelectorAll(".tenaga");
+        const overheadInputs = document.querySelectorAll(".overhead");
+        const nonprodInputs = document.querySelectorAll(".nonprod");
+
+        const bahanSubs = document.querySelectorAll(".bahan-sub");
+        const tenagaSubs = document.querySelectorAll(".tenaga-sub");
+        const overheadSubs = document.querySelectorAll(".overhead-sub");
+        const nonprodSubs = document.querySelectorAll(".nonprod-sub");
+
+        const produksiAwal = document.getElementById("produksiAwal");
+        const produkGagal = document.getElementById("produkGagal");
+        const margin = document.getElementById("margin");
+        const hargaAktual = document.getElementById("hargaAktual");
+
+        function sumInputs(inputs, subs) {
+            let total = 0;
+
+            inputs.forEach((input, index) => {
+                const value = getNumber(input);
+                total += value;
+
+                if (subs[index]) {
+                    subs[index].textContent = rupiah(value);
+                }
+            });
+
+            return total;
+        }
+
+        function setStatusHarga(text, type) {
+            const statusHarga = document.getElementById("statusHarga");
+
+            statusHarga.textContent = text;
+            statusHarga.classList.remove("status-safe", "status-warning", "status-danger");
+
+            if (type === "safe") {
+                statusHarga.classList.add("status-safe");
+            } else if (type === "warning") {
+                statusHarga.classList.add("status-warning");
+            } else if (type === "danger") {
+                statusHarga.classList.add("status-danger");
+            }
+        }
+
+        function calculateProject() {
+            const totalBahanValue = sumInputs(bahanInputs, bahanSubs);
+            const totalTenagaValue = sumInputs(tenagaInputs, tenagaSubs);
+            const totalOverheadValue = sumInputs(overheadInputs, overheadSubs);
+            const totalNonprodValue = sumInputs(nonprodInputs, nonprodSubs);
+
+            const totalProduksi = totalBahanValue + totalTenagaValue + totalOverheadValue;
+
+            const produksi = Math.max(getNumber(produksiAwal), 1);
+            const gagal = Math.min(getNumber(produkGagal), produksi - 1);
+            const layakJual = Math.max(produksi - gagal, 1);
+
+            const marginValue = getNumber(margin);
+            const hargaAktualValue = getNumber(hargaAktual);
+
+            const hppPerAwal = totalProduksi / produksi;
+            const hppPerLayak = totalProduksi / layakJual;
+            const fullCostPerUnit = (totalProduksi + totalNonprodValue) / layakJual;
+            const hargaRekomendasiValue = hppPerLayak + (hppPerLayak * marginValue / 100);
+
+            const labaKotorPerUnit = hargaAktualValue - hppPerLayak;
+            const totalLabaKotor = labaKotorPerUnit * layakJual;
+            const estimasiLabaBersih = totalLabaKotor - totalNonprodValue;
+
+            document.getElementById("totalBahan").textContent = rupiah(totalBahanValue);
+            document.getElementById("totalTenaga").textContent = rupiah(totalTenagaValue);
+            document.getElementById("totalOverhead").textContent = rupiah(totalOverheadValue);
+            document.getElementById("totalNonprod").textContent = rupiah(totalNonprodValue);
+
+            document.getElementById("sumProduksi").textContent = rupiah(totalProduksi);
+            document.getElementById("sumHpp").textContent = rupiah(hppPerLayak);
+            document.getElementById("sumFullCost").textContent = rupiah(fullCostPerUnit);
+            document.getElementById("sumHarga").textContent = rupiah(Math.ceil(hargaRekomendasiValue / 500) * 500);
+
+            document.getElementById("hasilProduksi").textContent = rupiah(totalProduksi);
+            document.getElementById("hasilLayak").textContent = `${numberFormat(layakJual)} pcs`;
+            document.getElementById("hppAwal").textContent = rupiah(hppPerAwal);
+            document.getElementById("hppLayak").textContent = rupiah(hppPerLayak);
+            document.getElementById("fullCost").textContent = rupiah(fullCostPerUnit);
+            document.getElementById("hargaRekomendasi").textContent = rupiah(hargaRekomendasiValue);
+            document.getElementById("labaBersih").textContent = rupiah(estimasiLabaBersih);
+
+            document.getElementById("cardProduksi").textContent = `${numberFormat(produksi)} pcs`;
+            document.getElementById("cardLayak").textContent = `${numberFormat(layakJual)} pcs`;
+            document.getElementById("cardHarga").textContent = rupiah(Math.ceil(hargaRekomendasiValue / 500) * 500);
+
+            const tingkatGagal = (gagal / produksi) * 100;
+            const selisihHpp = hppPerLayak - hppPerAwal;
+            const marginAktual = ((hargaAktualValue - hppPerLayak) / hppPerLayak) * 100;
+            const labaBersihPerUnit = estimasiLabaBersih / layakJual;
+
+            let statusText = "";
+            let statusType = "";
+
+            if (hargaAktualValue < hppPerLayak) {
+                statusText = "STATUS: Harga jual belum menutup HPP";
+                statusType = "danger";
+            } else if (hargaAktualValue < fullCostPerUnit) {
+                statusText = "STATUS: Harga menutup HPP, tapi belum aman";
+                statusType = "warning";
+            } else if (hargaAktualValue < hargaRekomendasiValue) {
+                statusText = "STATUS: Harga sudah menutup biaya, margin masih tipis";
+                statusType = "warning";
+            } else {
+                statusText = "STATUS: Harga jual relatif aman";
+                statusType = "safe";
+            }
+
+            setStatusHarga(statusText, statusType);
+
+            document.getElementById("analysisText").textContent =
+                `Total biaya produksi dalam simulasi ini adalah ${rupiah(totalProduksi)}. ` +
+                `Dengan produksi awal ${numberFormat(produksi)} pcs dan produk gagal ${numberFormat(gagal)} pcs, ` +
+                `produk yang layak dijual menjadi ${numberFormat(layakJual)} pcs. Karena itu, HPP yang lebih realistis adalah ${rupiah(hppPerLayak)} per pcs, ` +
+                `bukan ${rupiah(hppPerAwal)} per pcs. Selisih sebesar ${rupiah(selisihHpp)} terjadi karena biaya produk gagal ikut dibebankan ke produk yang berhasil dijual.`;
+
+            let riskMessage = "";
+
+            if (tingkatGagal === 0) {
+                riskMessage =
+                    `Tidak ada produk gagal dalam simulasi ini, sehingga seluruh hasil produksi dapat dijual. Kondisi ini membuat HPP per unit lebih rendah dan efisien.`;
+            } else if (tingkatGagal <= 5) {
+                riskMessage =
+                    `Tingkat produk gagal sebesar ${tingkatGagal.toFixed(1)}% masih tergolong wajar untuk produksi UMKM kecil. Namun, produk gagal tetap perlu dihitung agar harga jual tidak terlalu rendah.`;
+            } else if (tingkatGagal <= 10) {
+                riskMessage =
+                    `Tingkat produk gagal sebesar ${tingkatGagal.toFixed(1)}% mulai perlu diperhatikan. Jika sering terjadi, UMKM perlu memperbaiki proses produksi agar biaya tidak terlalu banyak terserap pada produk yang tidak bisa dijual.`;
+            } else {
+                riskMessage =
+                    `Tingkat produk gagal sebesar ${tingkatGagal.toFixed(1)}% tergolong tinggi. Kondisi ini dapat menaikkan HPP secara signifikan dan menekan laba. UMKM perlu mengevaluasi kualitas bahan, teknik produksi, atau standar proses kerja.`;
+            }
+
+            document.getElementById("riskText").textContent = riskMessage;
+
+            let pricingMessage = "";
+
+            if (hargaAktualValue < hppPerLayak) {
+                pricingMessage =
+                    `Harga jual aktual sebesar ${rupiah(hargaAktualValue)} berada di bawah HPP per unit ${rupiah(hppPerLayak)}. Artinya, setiap produk yang dijual berpotensi menimbulkan kerugian sebelum biaya nonproduksi diperhitungkan.`;
+            } else if (hargaAktualValue < fullCostPerUnit) {
+                pricingMessage =
+                    `Harga jual aktual sebesar ${rupiah(hargaAktualValue)} sudah menutup HPP, tetapi belum menutup full cost per unit sebesar ${rupiah(fullCostPerUnit)}. Artinya, biaya nonproduksi seperti transportasi, promosi, dan administrasi masih dapat mengurangi keuntungan.`;
+            } else if (hargaAktualValue < hargaRekomendasiValue) {
+                pricingMessage =
+                    `Harga jual aktual sebesar ${rupiah(hargaAktualValue)} sudah berada di atas full cost per unit ${rupiah(fullCostPerUnit)}, tetapi masih di bawah harga rekomendasi ${rupiah(hargaRekomendasiValue)}. Harga ini masih aman, tetapi margin laba belum terlalu besar.`;
+            } else {
+                pricingMessage =
+                    `Harga jual aktual sebesar ${rupiah(hargaAktualValue)} sudah berada di atas harga rekomendasi ${rupiah(hargaRekomendasiValue)}. Dengan kondisi ini, harga jual relatif aman karena sudah menutup biaya produksi, biaya nonproduksi, dan memberikan margin laba yang memadai.`;
+            }
+
+            document.getElementById("pricingText").textContent = pricingMessage;
+
+            let profitMessage = "";
+
+            if (estimasiLabaBersih < 0) {
+                profitMessage =
+                    `Dengan harga jual tersebut, estimasi laba bersih per batch adalah ${rupiah(estimasiLabaBersih)}. Nilai negatif ini menunjukkan bahwa UMKM berpotensi mengalami kerugian. Harga jual perlu dinaikkan atau biaya produksi perlu ditekan.`;
+            } else if (estimasiLabaBersih === 0) {
+                profitMessage =
+                    `Dengan harga jual tersebut, estimasi laba bersih per batch adalah ${rupiah(estimasiLabaBersih)}. Artinya, usaha berada pada titik impas dan belum menghasilkan keuntungan bersih.`;
+            } else {
+                profitMessage =
+                    `Dengan harga jual tersebut, estimasi laba bersih per batch adalah ${rupiah(estimasiLabaBersih)}, atau sekitar ${rupiah(labaBersihPerUnit)} per pcs. Margin aktual terhadap HPP adalah sekitar ${marginAktual.toFixed(1)}%.`;
+            }
+
+            document.getElementById("profitText").textContent = profitMessage;
+
+            document.getElementById("conclusionText").textContent =
+                `Perhitungan HPP membantu UMKM menentukan batas harga jual yang aman. Dalam simulasi ini, HPP risol mayo setelah memperhitungkan produk gagal adalah ${rupiah(hppPerLayak)} per pcs, ` +
+                `sedangkan full cost per unit adalah ${rupiah(fullCostPerUnit)}. Dengan harga jual ${rupiah(hargaAktualValue)}, estimasi laba bersih per batch adalah ${rupiah(estimasiLabaBersih)}. ` +
+                `Berdasarkan hasil tersebut, keputusan harga jual sebaiknya tidak hanya mengikuti harga pasar, tetapi juga mempertimbangkan struktur biaya, produk gagal, biaya nonproduksi, dan margin laba yang diinginkan.`;
+        }
+
+        const allInputs = [
+            ...bahanInputs,
+            ...tenagaInputs,
+            ...overheadInputs,
+            ...nonprodInputs,
+            produksiAwal,
+            produkGagal,
+            margin,
+            hargaAktual
+        ];
+
+        allInputs.forEach((input) => {
+            input.addEventListener("input", calculateProject);
+        });
+
+        calculateProject();
+
+        const reveals = document.querySelectorAll(".reveal");
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("active");
+                }
+            });
+        }, {
+            threshold: 0.16
+        });
+
+        reveals.forEach((el) => observer.observe(el));
+    </script>
+
+</body>
+
+</html>
